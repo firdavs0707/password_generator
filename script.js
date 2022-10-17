@@ -5,7 +5,7 @@ passwordInput = document.querySelector(".input-box input"),
 passIndicator = document.querySelector(".pass-indicator"),
 generateBtn = document.querySelector(".generate-btn");
 
-const characters = { // object of letters, numbers & symbols
+const characters = {
     lowercase: "abcdefghijklmnopqrstuvwxyz",
     uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     numbers: "0123456789",
@@ -18,42 +18,34 @@ const generatePassword = () => {
     excludeDuplicate = false,
     passLength = lengthSlider.value;
 
-    options.forEach(option => { // looping through each option's checkbox
-        if(option.checked) { // if checkbox is checked
-            // if checkbox id isn't exc-duplicate && spaces
+    options.forEach(option => {
+        if(option.checked) {
             if(option.id !== "exc-duplicate" && option.id !== "spaces") {
-                // adding particular key value from character object to staticPassword
                 staticPassword += characters[option.id];
-            } else if(option.id === "spaces") { // if checkbox id is spaces
-                staticPassword += `  ${staticPassword}  `; // adding space at the beginning & end of staticPassword
-            } else { // else pass true value to excludeDuplicate
+            } else if(option.id === "spaces") {
+                staticPassword += `  ${staticPassword}  `;
+            } else {
                 excludeDuplicate = true;
             }
         }
     });
 
     for (let i = 0; i < passLength; i++) {
-        // getting random character from the static password
         let randomChar = staticPassword[Math.floor(Math.random() * staticPassword.length)];
-        if(excludeDuplicate) { // if excludeDuplicate is true
-            // if randomPassword doesn't contains the current random character or randomChar is equal 
-            // to space " " then add random character to randomPassword else decrement i by -1
+        if(excludeDuplicate) {
             !randomPassword.includes(randomChar) || randomChar == " " ? randomPassword += randomChar : i--;
-        } else { // else add random character to randomPassword
+        } else {
             randomPassword += randomChar;
         }
     }
-    passwordInput.value = randomPassword; // passing randomPassword to passwordInput value
+    passwordInput.value = randomPassword;
 }
 
 const upadatePassIndicator = () => {
-    // if lengthSlider value is less than 8 then pass "weak" as passIndicator id else if lengthSlider 
-    // value is less than 16 then pass "medium" as id else pass "strong" as id
     passIndicator.id = lengthSlider.value <= 8 ? "weak" : lengthSlider.value <= 16 ? "medium" : "strong";
 }
 
 const updateSlider = () => {
-    // passing slider value as counter text
     document.querySelector(".pass-length span").innerText = lengthSlider.value;
     generatePassword();
     upadatePassIndicator();
@@ -61,10 +53,10 @@ const updateSlider = () => {
 updateSlider();
 
 const copyPassword = () => {
-    navigator.clipboard.writeText(passwordInput.value); // copying random password
-    copyIcon.innerText = "check"; // changing copy icon to tick
+    navigator.clipboard.writeText(passwordInput.value);
+    copyIcon.innerText = "check";
     copyIcon.style.color = "#4285F4";
-    setTimeout(() => { // after 1500 ms, changing tick icon back to copy
+    setTimeout(() => {
         copyIcon.innerText = "copy_all";
         copyIcon.style.color = "#707070";
     }, 1500);
